@@ -65,11 +65,11 @@ async def drawText(image_path, text):
 
     if os.name == "nt":
 
-        fnt = "ariel.ttf"
+        fnt = "Cabal-w5j3.ttf"
 
     else:
 
-        fnt = "./MukeshRobot/resources/default.ttf"
+        fnt = "./MukeshRobot/resources/Cabal-w5j3.ttf"
 
     m_font = ImageFont.truetype(fnt, int((70 / 640) * i_width))
 
