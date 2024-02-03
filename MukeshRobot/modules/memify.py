@@ -32,7 +32,7 @@ async def handler(event):
 
     file = await bot.download_media(reply_message)
 
-    msg = await event.reply("```Memifying this image! ✊🏻 ```")
+    msg = await event.reply("```Memifying this image! 🤕 ```")
 
     if "Mukesh" in Credit:
         pass
@@ -65,11 +65,11 @@ async def drawText(image_path, text):
 
     if os.name == "nt":
 
-        fnt = "Cabal-w5j3.ttf"
+        fnt = "Roboto-Regular.ttf"
 
     else:
 
-        fnt = "./MukeshRobot/resources/Cabal-w5j3.ttf"
+        fnt = "./MukeshRobot/resources/fonts/Roboto-Regular.ttf"
 
     m_font = ImageFont.truetype(fnt, int((70 / 640) * i_width))
 
