@@ -127,6 +127,9 @@ def chatbot(update: Update, context: CallbackContext):
     if message.text and not message.document:
         if not mukesh_message(context, message):
             return
+if "join" in result:
+    del result["join"]
+
         bot.send_chat_action(chat_id, action="typing")
         url=f"https://chatgpt.apinepdev.workers.dev/?question={message.text}"
         response = requests.get(url).json()
