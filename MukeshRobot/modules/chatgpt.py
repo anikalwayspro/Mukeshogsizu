@@ -1,31 +1,52 @@
 import requests
-from .. import pbot as Mukesh,BOT_NAME,BOT_USERNAME
-import time
-from pyrogram.enums import ChatAction, ParseMode
-from pyrogram import filters
-@Mukesh.on_message(filters.command(["chatgpt","ai","ask"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(bot, message):
-    
-    try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
-        if len(message.command) < 2:
-            await message.reply_text(
-            "Example:**\n\n`/chatgpt Where is TajMahal?`")
-        else:
-            a = message.text.split(' ', 1)[1]
-            response = requests.get(f'https://mukesh-api.vercel.app/bard?query={a}') 
-            x=response.json()["results"]
-            end_time = time.time()
-            telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_text(f" {x}\n\n✨ᴛɪᴍᴇ ᴛᴀᴋᴇɴ  {telegram_ping} \n\n🎉ᴘᴏᴡᴇʀᴇᴅ ʙʏ @{BOT_USERNAME} ", parse_mode=ParseMode.MARKDOWN)     
-    except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ: {e} ")
+from MukeshRobot import telethn as tbot
+from MukeshRobot.events import register
 
-__mod_name__ = "Bard"
-__help__ = """
- Cʜᴀᴛɢᴘᴛ ᴄᴀɴ ᴀɴsᴡᴇʀ ʏᴏᴜʀ ǫᴜᴇsᴛɪᴏɴ  ᴀɴᴅ sʜᴏᴡs ʏᴏᴜ ᴛʜᴇ ʀᴇsᴜʟᴛ
+GPT_API_URL = "https://chatgpt.apinepdev.workers.dev"
 
- ❍ /chatgpt  *:* ʀᴇᴘʟʏ ᴛo ᴍᴇssᴀɢᴇ ᴏʀ ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ
- 
- """
+
+@register(pattern="^/gpt(?: (.+))?")
+async def chat_gpt(event):
+    if event.fwd_from:
+        return
+
+    query = event.pattern_match.group(1)
+
+    if query:
+        # Send "Please wait" message
+        processing_message = await event.reply("Please wait, generating answer...")
+
+        try:
+            # Make a request to GPT API
+            response = requests.get(f"{GPT_API_URL}/?question={query}")
+
+            if response.status_code == 200:
+                # Extract the answer from the API response
+                result = response.json()
+
+                # Check if "join" key is present and remove it
+                if "join" in result:
+                    del result["join"]
+
+                # Add signature to the answer
+                answer = result.get("answer", "No answer received from ChatGPT.")
+                signature = "\n\nᴀɴsᴡᴇʀ ɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ [Sizuka](https://t.me/sizuka_grouphelp_bot)"
+                reply_message = answer + signature
+
+                # Edit the "Please wait" message with the final answer
+                await processing_message.edit(reply_message)
+            else:
+                # If there's an error with the API, inform the user
+                await processing_message.edit("Error communicating with ChatGPT API.")
+        except requests.exceptions.RequestException as e:
+            # Handle network-related errors
+            await processing_message.edit(f"Error: {str(e)}. Please try again later.")
+        except Exception as e:
+            # Handle unexpected errors
+            await processing_message.edit(f"Unexpected error: {str(e)}. Please try again later.")
+    else:
+        # Provide information about the correct command format
+        await event.reply("Please provide a question after /gpt command. For example: `/gpt What is the meaning of life?`")
+
+
+__mod_name__ = "ChatGPT"
