@@ -122,9 +122,8 @@ def chatbot(update: Update, context: CallbackContext):
     bot = context.bot
     is_mukesh = sql.is_mukesh(chat_id)
     if url.status_code == 200:
-        
   # Extract the answer from the API response
-        result = response.json()
+        result = url.json()
         
 # Check if "join" key is present and remove it
     if "join" in result:
