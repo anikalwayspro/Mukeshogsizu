@@ -127,8 +127,8 @@ def chatbot(update: Update, context: CallbackContext):
         result = response.json()
         
 # Check if "join" key is present and remove it
-                if "join" in result:
-                    del result["join"]
+    if "join" in result:
+        del result["join"]
     if is_mukesh:
         return
 
