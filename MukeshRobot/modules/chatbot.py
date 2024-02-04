@@ -121,21 +121,27 @@ def chatbot(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     bot = context.bot
     is_mukesh = sql.is_mukesh(chat_id)
+    if response.status_code == 200:
+        
+  # Extract the answer from the API response
+        result = response.json()
+        
+# Check if "join" key is present and remove it
+                if "join" in result:
+                    del result["join"]
     if is_mukesh:
         return
 
     if message.text and not message.document:
         if not mukesh_message(context, message):
             return
-if "join" in result:
-    del result["join"]
 
-        
+        bot.send_chat_action(chat_id, action="typing")
         url=f"https://chatgpt.apinepdev.workers.dev/?question={message.text}"
-            response = requests.get(url).json()
+      
+        ans = result.get("answer","Error connection")
+        message.reply_text(ans)        
         
-            message.reply_text(response)
-
 
 
 
