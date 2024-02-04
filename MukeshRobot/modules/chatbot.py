@@ -132,9 +132,9 @@ if "join" in result:
 
         
         url=f"https://chatgpt.apinepdev.workers.dev/?question={message.text}"
-        response = requests.get(url).json()
+            response = requests.get(url).json()
         
-        message.reply_text(response)
+            message.reply_text(response)
 
 
 
