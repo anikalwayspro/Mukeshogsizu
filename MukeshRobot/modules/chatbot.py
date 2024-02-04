@@ -129,7 +129,7 @@ def chatbot(update: Update, context: CallbackContext):
             return
         bot.send_chat_action(chat_id, action="typing")
         url=f"https://chatgpt.apinepdev.workers.dev/?question={message.text}"
-        response = requests.get(url).json()["results"]
+        response = response.json()
         
         message.reply_text(response)
 
