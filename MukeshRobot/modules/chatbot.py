@@ -121,7 +121,7 @@ def chatbot(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     bot = context.bot
     is_mukesh = sql.is_mukesh(chat_id)
-    if response.status_code == 200:
+    if url.status_code == 200:
         
   # Extract the answer from the API response
         result = response.json()
