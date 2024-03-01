@@ -128,7 +128,7 @@ def chatbot(update: Update, context: CallbackContext):
         if not mukesh_message(context, message):
             return
         bot.send_chat_action(chat_id, action="typing")
-        url=f"http://api.brainshop.ai/get?bid=176809&key=lbMN8CXTGzhn1NKG&uid=2067727121&msg={message.text}"
+        url=f"http://api.brainshop.ai/get?bid=179530&key=oyEYPK8N63C5fMZJ&uid=2067727121&msg={message.text}"
         response = requests.get(url).json()["cnt"]
         
         message.reply_text(response)
