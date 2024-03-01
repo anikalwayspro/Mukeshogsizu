@@ -121,26 +121,18 @@ def chatbot(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     bot = context.bot
     is_mukesh = sql.is_mukesh(chat_id)
-    if url.status_code == 200:
-  # Extract the answer from the API response
-        result = url.json()
-        
-# Check if "join" key is present and remove it
-    if "join" in result:
-        del result["join"]
     if is_mukesh:
         return
 
     if message.text and not message.document:
         if not mukesh_message(context, message):
             return
-
         bot.send_chat_action(chat_id, action="typing")
-        url=requests.get(f"https://chatgpt.apinepdev.workers.dev/?question={message.text}")
-      
-        ans = result.get("answer","Error connection")
-        message.reply_text(ans)        
+        url=f"http://api.brainshop.ai/get?bid=176809&key=lbMN8CXTGzhn1NKG&uid=[user]&msg={Message}"
+        response = requests.get(url).json()["results"]
         
+        message.reply_text(response)
+
 
 
 
